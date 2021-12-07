@@ -5,8 +5,8 @@
  */
 package RETO2_CICLO4.controlador;
 
-import RETO2_CICLO4.modelo.User;
-import RETO2_CICLO4.servicio.UserService;
+import RETO2_CICLO4.modelo.Order;
+import RETO2_CICLO4.servicio.OrderService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,86 +24,48 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author Angie Rojas
+ * @author ander
  */
+
 @RestController
-/**
- * Mapping
- */
-@RequestMapping("/api/user")
-/**
- * CrossOrigin
- */
+@RequestMapping("/api/order")
 @CrossOrigin("*")
-public class UserController {
+public class OrderController {
 
-    /**
-     * @Autowired
-     */
     @Autowired
-    private UserService userService;
+    private OrderService orderService;
 
-    /**
-     * @get Mapping
-     */
     @GetMapping("/all")
-    public List<User> getAll() {
-        return userService.getAll();
-    }
-    /*
-    *@get Mapping Id
-    */
-    @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable("id") int id) {
-        return userService.getUser(id);
+    public List<Order> getAll() {
+        return orderService.getAll();
     }
 
-    /**
-     * @PostMapping
-     */
+    @GetMapping("/{id}")
+    public Optional<Order> getOrder(@PathVariable("id") int id) {
+        return orderService.getOrder(id);
+    }
+
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
-        return userService.create(user);
+    public Order create(@RequestBody Order gadget) {
+        return orderService.create(gadget);
     }
 
-    /**
-     * @PutMapping
-     */
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public User update(@RequestBody User user) {
-        return userService.update(user);
+    public Order update(@RequestBody Order gadget) {
+        return orderService.update(gadget);
     }
 
-    /**
-     * @DeleteMapping
-     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean delete(@PathVariable("id") int id) {
-        return userService.delete(id);
+        return orderService.delete(id);
     }
-
-    /**
-     *
-     * @param email
-     * @param password
-     * @return
-     */
-    @GetMapping("/{email}/{password}")
-    public User authenticateUser(@PathVariable("email") String email, @PathVariable("password") String password) {
-        return userService.authenticateUser(email, password);
+    
+    //Reto 3:Ordenes de pedido asociadas a los asesores de una zona
+    @GetMapping("/zona/{zona}")
+    public List<Order> findByZone(@PathVariable("zona") String zona) {
+        return orderService.findByZone(zona);
     }
-
-    /**
-     *
-     * @param email
-     * @return
-     */
-    @GetMapping("/emailexist/{email}")
-    public boolean emailExists(@PathVariable("email") String email) {
-        return userService.emailExists(email);
-    }
-
 }

@@ -19,25 +19,25 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class FootwearRepositorio {
     @Autowired
-    private InterfaceFootwear repository;
+    private InterfaceFootwear InterfaceOrder;
     
 public List<Footwear> getAll() {
-        return repository.findAll();
+        return InterfaceOrder.findAll();
     }
 
     public Optional<Footwear> getFootwears(String reference) {
-        return repository.findById(reference);
+        return InterfaceOrder.findById(reference);
     }
     public Footwear create(Footwear Footwear) {
-        return repository.save(Footwear);
+        return InterfaceOrder.save(Footwear);
     }
 
     public void update(Footwear Footwear) {
-        repository.save(Footwear);
+        InterfaceOrder.save(Footwear);
     }
     
     public void delete(Footwear Footwear) {
-        repository.delete(Footwear);
+        InterfaceOrder.delete(Footwear);
     }
 }
     

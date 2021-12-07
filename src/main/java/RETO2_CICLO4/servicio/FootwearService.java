@@ -10,6 +10,7 @@ import RETO2_CICLO4.repositorio.FootwearRepositorio;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,28 +21,31 @@ import org.springframework.stereotype.Service;
 public class FootwearService {
     
     @Autowired
-    private FootwearRepositorio FootwearsRepository;
+    private FootwearRepositorio footwearsRepository;
+    
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public List<Footwear> getAll() {
-        return FootwearsRepository.getAll();
+        return footwearsRepository.getAll();
     }
 
    public Optional<Footwear> getFootwears(String reference) {
-        return FootwearsRepository.getFootwears(reference);
+        return footwearsRepository.getFootwears(reference);
     }
 
     public Footwear create(Footwear Footwears) {
         if (Footwears.getReference() == null) {
             return Footwears;
         } else {
-            return FootwearsRepository.create(Footwears);
+            return footwearsRepository.create(Footwears);
         }
     }
 
     public Footwear update(Footwear Footwears) {
 
         if (Footwears.getReference() != null) {
-            Optional<Footwear> FootwearsDb = FootwearsRepository.getFootwears(Footwears.getReference());
+            Optional<Footwear> FootwearsDb = footwearsRepository.getFootwears(Footwears.getReference());
             if (!FootwearsDb.isEmpty()) {
                 
                 if (Footwears.getBrand()!= null) {
@@ -78,7 +82,7 @@ public class FootwearService {
                 }
                 
                 FootwearsDb.get().setAvailability(Footwears.isAvailability());
-                FootwearsRepository.update(FootwearsDb.get());
+                footwearsRepository.update(FootwearsDb.get());
                 return FootwearsDb.get();
             } else {
                 return Footwears;
@@ -90,7 +94,7 @@ public class FootwearService {
 
     public boolean delete(String reference) {
         Boolean aBoolean = getFootwears(reference).map(Footwears -> {
-            FootwearsRepository.delete(Footwears);
+            footwearsRepository.delete(Footwears);
             return true;
         }).orElse(false);
         return aBoolean;
